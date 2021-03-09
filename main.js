@@ -4,6 +4,14 @@ const Discord = require('discord.js');
 const fetch = require('node-fetch');
 const client = new Discord.Client();
 
+sadWords = ["sad", "depressed", "unhappy", "angry", "miserable"];
+
+encouragements = [
+    "Cheer up!"
+    , "Hang in there."
+    , "You are a great person / bot!"
+]
+
 function getQuote() {
     return fetch('https://zenquotes.io/api/random')
                 .then(response => {
@@ -28,6 +36,12 @@ client.on('message', message => {
         getQuote().then(
             quote => message.channel.send(quote)
         )
+    }
+
+    if  (sadWords.some(word => message.content.includes(word))) {
+        const encouragement = encouragements[Math.floor(Math.random() * encouragements.length)];
+
+        message.reply(encouragement);
     }
 });
 
